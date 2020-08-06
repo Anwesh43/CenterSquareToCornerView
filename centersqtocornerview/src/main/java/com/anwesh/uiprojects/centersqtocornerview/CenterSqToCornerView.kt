@@ -181,4 +181,27 @@ class CenterToSqCornerView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : CenterToSqCornerView) {
+
+        private val animator : Animator = Animator(view)
+        private val cstc : CenterSqToCorner = CenterSqToCorner(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            cstc.draw(canvas, paint)
+            animator.animate {
+                cstc.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            cstc.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
