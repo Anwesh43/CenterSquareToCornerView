@@ -30,18 +30,28 @@ fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 fun Canvas.drawCenterSqToCorner(scale : Float, w : Float, h : Float, paint : Paint) {
     val sf : Float = scale.sinify()
     val sf1 : Float = sf.divideScale(0, parts)
-    val size : Float = Math.min(w, h) / sizeFactor
+    val wSize : Float = w / sizeFactor
+    val hSize : Float = h / sizeFactor
     save()
     translate(w / 2, h / 2)
-    rotate(360f * sf1)
+    rotate(deg * sf1)
     scale(sf1, sf1)
-    drawRect(RectF(-size, -size, size, size), paint)
+    drawRect(RectF(-wSize / 2, -hSize / 2, wSize / 2, hSize / 2), paint)
+    var rot : Float = 0f
+    val angle : Double = (Math.atan(h.toDouble() / w.toDouble()) * 180) / Math.PI
+
     for (j in 1..(parts - 1)) {
+
         val sfj : Float = sf.divideScale(j, parts)
         save()
-        rotate(90f * j)
-        drawLine(0f, 0f, (w / 2 - size / 2) * sfj, -(h / 2 - size / 2) * sfj, paint)
+        rotate(rot)
+        drawLine(wSize / 2, -hSize / 2, wSize / 2 + (w / 2 - wSize / 2) * sfj, -hSize / 2 - (h / 2 - hSize / 2) * sfj, paint)
         restore()
+        if (j % 2 == 1) {
+            rot += 2 * angle.toFloat()
+        } else {
+            rot += 2 * (90f - angle.toFloat())
+        }
     }
     restore()
 }
