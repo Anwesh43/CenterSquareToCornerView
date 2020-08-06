@@ -206,4 +206,13 @@ class CenterToSqCornerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : CenterToSqCornerView {
+            val view : CenterToSqCornerView = CenterToSqCornerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
